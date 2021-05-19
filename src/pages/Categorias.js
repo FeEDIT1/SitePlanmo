@@ -184,7 +184,7 @@ const Categorias = () => {
                                     <tr key={item._id}>
                                         <td>{item.nome}</td>
                                         <td>{item.status}</td>
-                                        <td>{item.createdAt}</td>
+                                        <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                                         <td>
                                             <Button variant="outline-primary" title="Editar o registro"
                                                 onClick={() => setCategoria(item)}>

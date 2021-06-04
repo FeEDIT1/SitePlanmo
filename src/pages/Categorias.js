@@ -14,89 +14,90 @@ import Rodape from '../components/Rodape'
 import { BACKEND } from '../constants'
 
 import { MdRestaurantMenu, MdWeb, MdSave, MdModeEdit, MdDelete, MdCancel } from 'react-icons/md'
+import { unmountComponentAtNode } from 'react-dom'
 
-const Categorias = () => {
-    const valorInicial = { nome: '', status: true }
+const Moveis = () => {
+    const valorInicial = { movel: '', comodo: '', cor:'',valor:'' }
 
-    const [categoria, setCategoria] = useState(valorInicial)
-    const [categorias, setCategorias] = useState([])
-    const [carregandoCategorias, setCarregandoCategorias] = useState(false)
-    const [salvandoCategorias, setSalvandoCategorias] = useState(false)
+    const [movel, setMovel] = useState(valorInicial)
+    const [moveis, setMoveis] = useState([])
+    const [carregandoMoveis, setCarregandoMoveis] = useState(false)
+    const [salvandoMoveis, setSalvandoMoveis] = useState(false)
     const [confirmaExclusao, setConfirmaExclusao] = useState(false)
 
     const [aviso, setAviso] = useState('')
     const [erros, setErros] = useState({})
 
-    const { nome, status } = categoria
+    const { Nmovel, comodo, cor, valor } = movel
 
-    async function obterCategorias() {
-        setCarregandoCategorias(true)
-        let url = `${BACKEND}/categorias`
+    async function obterMoveis() {
+        setCarregandoMoveis(true)
+        let url = `${BACKEND}/moveis`
         await fetch(url)
             .then(response => response.json())
             .then(data => {
-                setCategorias(data)
+                setMoveis(data)
                 console.log(data)
             })
             .catch(function (error) {
                 console.error(`Erro ao obter as categorias: ${error.message}`)
             })
-        setCarregandoCategorias(false)
+        setCarregandoMoveis(false)
 
     }
 
     useEffect(() => {
-        document.title = 'Cadastro de Categorias'
-        obterCategorias()
+        document.title = 'Seus Móveis!'
+        obterMoveis()
     }, [])
 
-    const validaErrosCategoria = () => {
+    const validaErrosMóveis = () => {
         const novosErros = {}
         //Validação de Nome
-        if (!nome || nome === '') novosErros.nome = 'O nome não pode ser vazio'
-        else if (nome.length > 30) novosErros.nome = 'O nome informado é muito longo'
-        else if (nome.length < 3) novosErros.nome = 'O nome informado é muito curto'
+        if (! Nmovel || Nmovel === '') novosErros.Nmovel = 'O nome não pode ser vazio'
+        else if (Nmovel.length > 30) novosErros.Nmovel = 'O nome informado é muito longo'
+        else if (Nmovel.length < 3) novosErros.Nmovel = 'O nome informado é muito curto'
         return novosErros
     }
 
-    const alteraDadosCategoria = e => {
-        setCategoria({ ...categoria, [e.target.name]: e.target.value })
+    const alteraDadosMoveis = e => {
+        setMovel({ ...movel, [e.target.name]: e.target.value })
         setErros({})
     }
 
-    async function salvarCategoria(e) {
+    async function salvarMovel(e) {
         e.preventDefault() // evita que a página seja recarregada  
-        const novosErros = validaErrosCategoria()
+        const novosErros = validaErrosMóveis()
         //Existe algum erro no array?
         if (Object.keys(novosErros).length > 0) {
             //Sim, temos erros!
             setErros(novosErros)
         } else {
-            const metodo = categoria.hasOwnProperty('_id') ? 'PUT' : 'POST'
-            categoria.status = (categoria.status === true || categoria.status === 'ativo') ? 'ativo' : 'inativo'
-            setSalvandoCategorias(true)
-            let url = `${BACKEND}/categorias`
+            const metodo = movel.hasOwnProperty('_id') ? 'PUT' : 'POST'
+            movel.comodo = (movel.comodo === true )
+            setSalvandoMoveis(true)
+            let url = `${BACKEND}/moveis`
             await fetch(url, {
                 method: metodo,
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(categoria)
+                body: JSON.stringify(movel)
             }).then(response => response.json())
                 .then(data => {
                     (data._id || data.message) ? setAviso('Registro salvo com sucesso') : setAviso('')
-                    setCategoria(valorInicial) //limpa a tela
-                    obterCategorias()
+                    setMovel(valorInicial) //limpa a tela
+                    obterMoveis()
                 }).catch(function (error) {
                     console.error(`Erro ao salvar a categoria: ${error.message}`)
                 })
-            setSalvandoCategorias(false)
+            setSalvandoMoveis(false)
         }
     }
 
-    async function excluirCategoria() {
-        let url = `${BACKEND}/categorias/${categoria._id}`
+    async function excluirMovel() {
+        let url = `${BACKEND}/moveis/${movel._id}`
         await fetch(url, {
             method: 'DELETE',
             headers: {
@@ -106,8 +107,8 @@ const Categorias = () => {
         }).then(response => response.json())
             .then(data => {
                 data.message ? setAviso(data.message) : setAviso('')
-                setCategoria(valorInicial)
-                obterCategorias()
+                setMovel(valorInicial)
+                obterMoveis()
             })
             .catch(function (error) {
                 console.error(`Erro ao excluir a categoria: ${error.message}`)
@@ -133,22 +134,18 @@ const Categorias = () => {
                                 <Form.Control
                                     name="nome"
                                     placeholder="Ex: Churrascarias"
-                                    onChange={alteraDadosCategoria}
-                                    value={nome}
-                                    isInvalid={!!erros.nome}
+                                    onChange={alteraDadosMoveis}
+                                    value={Nmovel}
+                                    isInvalid={!!erros.Nmovel}
                                 />
                                 <Form.Control.Feedback type='invalid'>
-                                    {erros.nome}
+                                    {erros.Nmovel}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group controlId="status">
-                                <Form.Check type="checkbox" label="Ativo" name="status"
-                                    onChange={(e) => setCategoria({ ...categoria, [e.target.name]: e.target.checked })}
-                                    checked={status} />
-                            </Form.Group>
+                          
                             <Button variant="primary" type="submit" title="Salvar o registro"
-                                onClick={(e) => salvarCategoria(e)}>
-                                {salvandoCategorias
+                                onClick={(e) => salvarMovel(e)}>
+                                {salvandoMoveis
                                     ? <Spinner animation="border" size="sm" />
                                     : <MdSave />
                                 }
@@ -156,14 +153,14 @@ const Categorias = () => {
                             </Button>
                             &nbsp;
                             <Button variant="danger" type="button" title="Cancelar"
-                            onClick={()=> setCategoria(valorInicial)}>
+                            onClick={()=> setMovel(valorInicial)}>
                                 <MdCancel/> Cancelar
                             </Button>
                         </Form>
                     </Col>
                     <Col xs={12} lg={6}>
                         {/* Listagem das Categorias */}
-                        {carregandoCategorias &&
+                        {carregandoMoveis &&
                             <>
                                 <Spinner animation="border" size="sm" />
                                 <Spinner animation="grow" variant="info" />
@@ -174,26 +171,27 @@ const Categorias = () => {
                             <thead>
                                 <tr className="bg-warning text-dark">
                                     <th>Nome</th>
-                                    <th>Status</th>
-                                    <th>Inclusão</th>
-                                    <th>Opções</th>
+                                    <th>Comodo</th>
+                                    <th>Cor</th>
+                                    <th>Tamanho</th>
+                                    <th>Valor</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {categorias.map(item => (
+                                {moveis.map(item => (
                                     <tr key={item._id}>
                                         <td>{item.nome}</td>
                                         <td>{item.status}</td>
                                         <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                                         <td>
                                             <Button variant="outline-primary" title="Editar o registro"
-                                                onClick={() => setCategoria(item)}>
+                                                onClick={() => setMovel(item)}>
                                                 <MdModeEdit />
                                             </Button>
                                             &nbsp;
                                             <Button variant="outline-danger" title="Apagar o registro"
                                                 onClick={() => {
-                                                    setCategoria(item)
+                                                    setMovel(item)
                                                     setConfirmaExclusao(true)
                                                 }} >
                                                 <MdDelete />
@@ -203,7 +201,7 @@ const Categorias = () => {
                                 ))}
                                 <tr className="bg-dark text-light">
                                     <td colspan="3">Total de Registros:</td>
-                                    <td>{categorias.length}</td>
+                                    <td>{moveis.length}</td>
                                 </tr>
                             </tbody>
                         </Table>
@@ -223,7 +221,7 @@ const Categorias = () => {
                         <Button variant="success"
                             onClick={() => {
                                 setConfirmaExclusao(!confirmaExclusao)
-                                excluirCategoria()
+                                excluirMovel()
                             }}>
                             ✔️Confirmar
                             </Button>
@@ -252,4 +250,4 @@ const Categorias = () => {
     )
 }
 
-export default Categorias
+export default Moveis

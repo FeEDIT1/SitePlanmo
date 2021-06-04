@@ -30,7 +30,7 @@ const Inicio = () => {
                 <Button className="font-weight-bold"
                     variant="danger"  
                     size= "lg"                
-                    block href="#/categorias">
+                    block href="#/moveis">
                     Vamos começar!
   </Button>
                 <br />

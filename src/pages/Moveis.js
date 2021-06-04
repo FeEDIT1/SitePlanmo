@@ -121,18 +121,18 @@ const Moveis = () => {
                 <Cabecalho />
                 <Row className="bg-info text-light">
                     <Col>
-                        <h3><MdRestaurantMenu /> Categorias de Restaurantes</h3>
+                        <h3 className="text-center"><MdRestaurantMenu /> Lista de Móveis!</h3>
                     </Col>
                 </Row>
                 <Row>
                     <Col xs={12} lg={6}>
                         {/* Formulário das Categorias */}
-                        <h4><MdWeb /> Cadastro das Categorias</h4>
+                        <h4><MdWeb /> Registro do móvel</h4>
                         <Form method="post">
-                            <Form.Group controlId="nome">
-                                <Form.Label>Nome da Categoria</Form.Label>
+                            <Form.Group controlId="movel">
+                                <Form.Label>Nome do Móvel</Form.Label>
                                 <Form.Control
-                                    name="nome"
+                                    movel="movel"
                                     placeholder="Ex: Churrascarias"
                                     onChange={alteraDadosMoveis}
                                     value={Nmovel}
@@ -170,7 +170,7 @@ const Moveis = () => {
                         <Table striped bordered hover>
                             <thead>
                                 <tr className="bg-warning text-dark">
-                                    <th>Nome</th>
+                                    <th>Móvel</th>
                                     <th>Comodo</th>
                                     <th>Cor</th>
                                     <th>Tamanho</th>
@@ -180,8 +180,11 @@ const Moveis = () => {
                             <tbody>
                                 {moveis.map(item => (
                                     <tr key={item._id}>
-                                        <td>{item.nome}</td>
-                                        <td>{item.status}</td>
+                                        <td>{item.movel}</td>
+                                        <td>{item.comodo}</td>
+                                        <td>{item.cor}</td>
+                                        <td>{item.tamanho}</td>
+                                        <td>{item.valor}</td>
                                         <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                                         <td>
                                             <Button variant="outline-primary" title="Editar o registro"

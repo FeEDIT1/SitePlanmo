@@ -24,7 +24,7 @@ const Cabecalho = () => {
         title="Opções"
         id="cadastros"
         bg="dark" variant="dark">
-            <Dropdown.Item eventKey="1" href="#/categorias"><GiSofa/> Meus Móveis</Dropdown.Item>
+            <Dropdown.Item eventKey="1" href="#/moveis"><GiSofa/> Meus Móveis</Dropdown.Item>
             <Dropdown.Item eventKey="2" href="#/integrantes"><MdAccountCircle /> Integrantes</Dropdown.Item>
             <Dropdown.Item eventKey="3" href="#/FAQ"><MdDescription/>FAQ</Dropdown.Item>
           

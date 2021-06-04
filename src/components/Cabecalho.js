@@ -5,27 +5,29 @@ import Nav from 'react-bootstrap/Nav'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import {GiSofa} from "react-icons/gi"
 
-import { MdRestaurantMenu, MdDescription, MdStore, MdHome,
-MdMailOutline, MdLocalPizza, MdAccountCircle } from 'react-icons/md'
+import { MdDescription, MdStore, MdHome,
+MdMailOutline, MdAccountCircle } from 'react-icons/md'
 
 const Cabecalho = () => {
 
     return (
-<Navbar bg="primary" variant="dark">
-    <Navbar.Brand href="#inicio"><MdLocalPizza/> iComida</Navbar.Brand>
+<Navbar bg="dark" variant="dark">
+    <Navbar.Brand href="#inicio" ><GiSofa/> PlanMo</Navbar.Brand>
     <Nav className="mr-auto">
-      <Nav.Link href="#inicio"><MdHome/> Início</Nav.Link>
+    
       <Nav.Link href="#contato"><MdMailOutline/> Contato</Nav.Link>
       <DropdownButton 
         as={ButtonGroup}
         menuAlign={{ lg: 'right'}}
-        title="Cadastros"
-        id="cadastros">
-            <Dropdown.Item eventKey="1" href="#/categorias"><MdRestaurantMenu/> Categorias</Dropdown.Item>
-            <Dropdown.Item eventKey="2"><MdStore /> Restaurantes</Dropdown.Item>
-            <Dropdown.Item eventKey="3"><MdDescription/> Cardápios</Dropdown.Item>
-            <Dropdown.Item eventKey="4"><MdAccountCircle/> Usuários</Dropdown.Item>
+        title="Opções"
+        id="cadastros"
+        bg="dark" variant="dark">
+            <Dropdown.Item eventKey="1" href="#/categorias"><GiSofa/> Meus Móveis</Dropdown.Item>
+            <Dropdown.Item eventKey="2" href="#/integrantes"><MdAccountCircle /> Integrantes</Dropdown.Item>
+            <Dropdown.Item eventKey="3" href="#/FAQ"><MdDescription/>FAQ</Dropdown.Item>
+          
         </DropdownButton>
     </Nav>
   </Navbar>

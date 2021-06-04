@@ -1,13 +1,13 @@
 import React from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 
-import { MdLocalPizza } from 'react-icons/md'
+import {GiSofa} from "react-icons/gi"
 
 const Rodape = () => {
     return (
 <Navbar bg="dark" fixed="bottom">
     <Navbar.Brand href="#inicio" className="text-light">
-        <MdLocalPizza/> iComida &copy; - Todos os direitos reservados
+        <GiSofa/> PlanMo &copy; - Todos os direitos reservados
     </Navbar.Brand>
 </Navbar>
     )

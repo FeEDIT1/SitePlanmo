@@ -126,7 +126,7 @@ const Moveis = () => {
                 <Row>
                     <Col xs={12} lg={6}>
                         {/* Formulário das Categorias */}
-                        <h4><MdWeb /> Registro do móvel</h4>
+                        <h4><MdWeb /> Registro do móvel (favor, antes de utilizar verificar o <Button href="#/manual" >Manual</Button> ) </h4>
                         <Form method="post">
                             <Form.Group controlId="nomeMovel">
                                 <Form.Label>Nome da Categoria</Form.Label>

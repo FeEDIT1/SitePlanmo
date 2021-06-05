@@ -12,12 +12,12 @@ import Toast from 'react-bootstrap/Toast'
 import Cabecalho from '../components/Cabecalho'
 import Rodape from '../components/Rodape'
 import { BACKEND } from '../constants'
-
+import {GiSofa} from "react-icons/gi"
 import { MdRestaurantMenu, MdWeb, MdSave, MdModeEdit, MdDelete, MdCancel } from 'react-icons/md'
 import { unmountComponentAtNode } from 'react-dom'
 
 const Moveis = () => {
-    const valorInicial = { movel: '', comodo: '', cor:'',valor:'' }
+    const valorInicial = { nomeMovel: '', lugar:'', cor:'', tamanho:'', valor:''}
 
     const [movel, setMovel] = useState(valorInicial)
     const [moveis, setMoveis] = useState([])
@@ -28,7 +28,7 @@ const Moveis = () => {
     const [aviso, setAviso] = useState('')
     const [erros, setErros] = useState({})
 
-    const { Nmovel, comodo, cor, valor } = movel
+    const { nomeMovel, lugar, cor, tamanho, valor } = movel
 
     async function obterMoveis() {
         setCarregandoMoveis(true)
@@ -54,9 +54,9 @@ const Moveis = () => {
     const validaErrosMóveis = () => {
         const novosErros = {}
         //Validação de Nome
-        if (! Nmovel || Nmovel === '') novosErros.Nmovel = 'O nome não pode ser vazio'
-        else if (Nmovel.length > 30) novosErros.Nmovel = 'O nome informado é muito longo'
-        else if (Nmovel.length < 3) novosErros.Nmovel = 'O nome informado é muito curto'
+        if (! nomeMovel || nomeMovel === '') novosErros.nomeMovel = 'O nome não pode ser vazio'
+        else if (nomeMovel.length > 30) novosErros.nomeMovel = 'O nome informado é muito longo'
+        else if (nomeMovel.length < 3) novosErros.nomeMovel = 'O nome informado é muito curto'
         return novosErros
     }
 
@@ -74,7 +74,6 @@ const Moveis = () => {
             setErros(novosErros)
         } else {
             const metodo = movel.hasOwnProperty('_id') ? 'PUT' : 'POST'
-            movel.comodo = (movel.comodo === true )
             setSalvandoMoveis(true)
             let url = `${BACKEND}/moveis`
             await fetch(url, {
@@ -87,7 +86,7 @@ const Moveis = () => {
             }).then(response => response.json())
                 .then(data => {
                     (data._id || data.message) ? setAviso('Registro salvo com sucesso') : setAviso('')
-                    setMovel(valorInicial) //limpa a tela
+                    setMovel(valorInicial)
                     obterMoveis()
                 }).catch(function (error) {
                     console.error(`Erro ao salvar a categoria: ${error.message}`)
@@ -117,11 +116,11 @@ const Moveis = () => {
 
     return (
         <>
-            <Container fluid className="p-0">
+            <Container fluid className="p-0 ">
                 <Cabecalho />
-                <Row className="bg-info text-light">
+                <Row className="bg-danger text-light">
                     <Col>
-                        <h3 className="text-center"><MdRestaurantMenu /> Lista de Móveis!</h3>
+                        <h3 className="text-center"><GiSofa /> Lista de Móveis!</h3>
                     </Col>
                 </Row>
                 <Row>
@@ -129,21 +128,92 @@ const Moveis = () => {
                         {/* Formulário das Categorias */}
                         <h4><MdWeb /> Registro do móvel</h4>
                         <Form method="post">
-                            <Form.Group controlId="movel">
-                                <Form.Label>Nome do Móvel</Form.Label>
+                            <Form.Group controlId="nomeMovel">
+                                <Form.Label>Nome da Categoria</Form.Label>
                                 <Form.Control
-                                    movel="movel"
-                                    placeholder="Ex: Churrascarias"
+                                    name="nomeMovel"
+                                    placeholder="Ex: Sofa"
                                     onChange={alteraDadosMoveis}
-                                    value={Nmovel}
-                                    isInvalid={!!erros.Nmovel}
+                                    value={nomeMovel}
+                                    isInvalid={!!erros.nomeMovel}
                                 />
                                 <Form.Control.Feedback type='invalid'>
-                                    {erros.Nmovel}
+                                    {erros.nomeMovel}
                                 </Form.Control.Feedback>
                             </Form.Group>
                           
-                            <Button variant="primary" type="submit" title="Salvar o registro"
+                         {/*  Registro comodo */}
+                         <Form method="post">
+                            <Form.Group controlId="lugar">
+                                <Form.Label>Qual cômodo o móvel ficará?</Form.Label>
+                                <Form.Control
+                                    name="lugar"
+                                    placeholder="Ex: Quarto"
+                                    onChange={alteraDadosMoveis}
+                                    value={lugar}
+                                    isInvalid={!!erros.lugar}
+                                />
+                                <Form.Control.Feedback type='invalid'>
+                                    {erros.lugar}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                          </Form>
+
+                            {/*  Registro Cor */}
+                         <Form method="post">
+                            <Form.Group controlId="cor">
+                                <Form.Label>Qual a cor do móvel?</Form.Label>
+                                <Form.Control
+                                    name="cor"
+                                    placeholder="Ex: Preto"
+                                    onChange={alteraDadosMoveis}
+                                    value={cor}
+                                    isInvalid={!!erros.cor}
+                                />
+                                <Form.Control.Feedback type='invalid'>
+                                    {erros.cor}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                          </Form> 
+
+                                  {/*  Registro tamanho */}
+                         <Form method="post">
+                            <Form.Group controlId="tamanho">
+                                <Form.Label>Qual o tamanho do móvel?</Form.Label>
+                                <Form.Control
+                                    name="tamanho"
+                                    placeholder="Ex: Grande"
+                                    onChange={alteraDadosMoveis}
+                                    value={tamanho}
+                                    isInvalid={!!erros.tamanho}
+                                />
+                                <Form.Control.Feedback type='invalid'>
+                                    {erros.tamanho}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                          </Form> 
+
+                          {/*  Registro valor */}
+                          <Form method="post">
+                            <Form.Group controlId="valor">
+                                <Form.Label>Qual o valor médio do móvel?</Form.Label>
+                                <Form.Control
+                                    name="valor"
+                                    placeholder="Ex: 215"
+                                    onChange={alteraDadosMoveis}
+                                    value={valor}
+                                    isInvalid={!!erros.valor}
+                                />
+                                <Form.Control.Feedback type='invalid'>
+                                    {erros.valor}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                          </Form> 
+
+
+
+
+                            <Button variant="primary " type="submit" title="Salvar o registro"
                                 onClick={(e) => salvarMovel(e)}>
                                 {salvandoMoveis
                                     ? <Spinner animation="border" size="sm" />
@@ -152,10 +222,7 @@ const Moveis = () => {
                                 Salvar
                             </Button>
                             &nbsp;
-                            <Button variant="danger" type="button" title="Cancelar"
-                            onClick={()=> setMovel(valorInicial)}>
-                                <MdCancel/> Cancelar
-                            </Button>
+                            
                         </Form>
                     </Col>
                     <Col xs={12} lg={6}>
@@ -169,7 +236,7 @@ const Moveis = () => {
                         }
                         <Table striped bordered hover>
                             <thead>
-                                <tr className="bg-warning text-dark">
+                                <tr className="bg-dark text-light">
                                     <th>Móvel</th>
                                     <th>Comodo</th>
                                     <th>Cor</th>
@@ -180,8 +247,8 @@ const Moveis = () => {
                             <tbody>
                                 {moveis.map(item => (
                                     <tr key={item._id}>
-                                        <td>{item.movel}</td>
-                                        <td>{item.comodo}</td>
+                                        <td>{item.nomeMovel}</td>
+                                        <td>{item.lugar}</td>
                                         <td>{item.cor}</td>
                                         <td>{item.tamanho}</td>
                                         <td>{item.valor}</td>
@@ -247,7 +314,7 @@ const Moveis = () => {
                     <Toast.Body classname="text-light">{aviso}</Toast.Body>
                 </Toast>
 
-                <Rodape />
+               
             </Container>
         </>
     )

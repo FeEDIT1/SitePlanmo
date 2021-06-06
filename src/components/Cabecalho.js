@@ -31,7 +31,7 @@ const Cabecalho = () => {
         </DropdownButton>
     </Nav>
   </Navbar>
-    )
+    ) //
 }
 
 export default Cabecalho
